@@ -16,11 +16,24 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class JsonHttpResponse {
     
+    public static String errorStatus = "error";
+    public static String createdStatus = "created";
+    public static String fetchedStatus = "fetched";
+    
     public String status;
     public String message;
     public Object data;
     
     public JsonHttpResponse(){}
+
+    public JsonHttpResponse(String status, String message) {
+        this.status = status;
+        this.message = message;
+    }
+
+    public JsonHttpResponse(Object data) {
+        this.data = data;
+    }
 
     public JsonHttpResponse(String status, String message, Object data) {
         this.status = status;

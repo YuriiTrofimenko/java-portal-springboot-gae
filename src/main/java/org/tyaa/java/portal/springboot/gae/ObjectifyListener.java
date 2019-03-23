@@ -8,11 +8,13 @@ package org.tyaa.java.portal.springboot.gae;
 import com.google.cloud.datastore.DatastoreOptions;
 import com.googlecode.objectify.ObjectifyFactory;
 import com.googlecode.objectify.ObjectifyService;
+import java.util.logging.Logger;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 import org.tyaa.java.portal.datastore.model.Article;
 import org.tyaa.java.portal.datastore.model.Author;
+import org.tyaa.java.portal.springboot.gae.utils.ErrorsGetter;
 
 /**
  *
@@ -21,29 +23,41 @@ import org.tyaa.java.portal.datastore.model.Author;
 @WebListener
 public class ObjectifyListener implements ServletContextListener{
     
+    private static final Logger log =
+            Logger.getLogger(ObjectifyListener.class.getName());
+    
     @Override
         public void contextInitialized(ServletContextEvent sce) {
             
-            if (System.getenv("SPRING_PROFILES_ACTIVE") == null) {
-                // local without memcache (gradle bootRun)
-                System.out.println("ObjectifyService.init - 1");
+            try {
+                /*if (System.getenv("SPRING_PROFILES_ACTIVE") == null) {
+                    // local without memcache (gradle bootRun)
+                    //System.out.println("ObjectifyService.init - 1");
+                    log.info("ObjectifyService.init - 1");
+                    ObjectifyService.init(new ObjectifyFactory(
+                            DatastoreOptions.newBuilder()
+                                    .setHost("http://localhost:8484")
+                                    .setProjectId("spring-gae-datastore")
+                                    .build()
+                                    .getService()
+                    ));
+                }
+                else {
+                    // on appengine
+                    log.info("ObjectifyService.init - 1-1");
+                    ObjectifyService.init(new ObjectifyFactory(
+                            DatastoreOptions.getDefaultInstance().getService()
+                    ));
+                }*/
                 ObjectifyService.init(new ObjectifyFactory(
-                        DatastoreOptions.newBuilder()
-                                .setHost("http://localhost:8484")
-                                .setProjectId("spring-gae-datastore")
-                                .build()
-                                .getService()
-                ));
+                            DatastoreOptions.getDefaultInstance().getService()
+                    ));
+            } catch (Exception ex) {
+                log.info(ErrorsGetter.printException(ex));
             }
-            else {
-                // on appengine
-                ObjectifyService.init(new ObjectifyFactory(
-                        DatastoreOptions.getDefaultInstance().getService()
-                ));
-            }
-            System.out.println("ObjectifyService.init - 2");
+            log.info("ObjectifyService.init - 2");
             ObjectifyService.register(Article.class);
-            System.out.println("ObjectifyService.init - 3");
+            log.info("ObjectifyService.init - 3");
             ObjectifyService.register(Author.class);
         }
 

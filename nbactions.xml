@@ -11,6 +11,7 @@
             <actionName>CUSTOM-appengine-deploy</actionName>
             <displayName>appengine-deploy</displayName>
             <goals>
+                <goal>clean</goal>
                 <goal>appengine:deploy</goal>
             </goals>
         </action>
