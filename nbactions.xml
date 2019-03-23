@@ -7,4 +7,11 @@
                 <goal>appengine:run</goal>
             </goals>
         </action>
+        <action>
+            <actionName>CUSTOM-appengine-deploy</actionName>
+            <displayName>appengine-deploy</displayName>
+            <goals>
+                <goal>appengine:deploy</goal>
+            </goals>
+        </action>
     </actions>
