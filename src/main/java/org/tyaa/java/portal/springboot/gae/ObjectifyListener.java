@@ -8,6 +8,7 @@ package org.tyaa.java.portal.springboot.gae;
 import com.google.cloud.datastore.DatastoreOptions;
 import com.googlecode.objectify.ObjectifyFactory;
 import com.googlecode.objectify.ObjectifyService;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -30,7 +31,7 @@ public class ObjectifyListener implements ServletContextListener{
         public void contextInitialized(ServletContextEvent sce) {
             
             try {
-                /*if (System.getenv("SPRING_PROFILES_ACTIVE") == null) {
+                if (System.getenv("SPRING_PROFILES_ACTIVE") == null) {
                     // local without memcache (gradle bootRun)
                     //System.out.println("ObjectifyService.init - 1");
                     log.info("ObjectifyService.init - 1");
@@ -48,12 +49,9 @@ public class ObjectifyListener implements ServletContextListener{
                     ObjectifyService.init(new ObjectifyFactory(
                             DatastoreOptions.getDefaultInstance().getService()
                     ));
-                }*/
-                ObjectifyService.init(new ObjectifyFactory(
-                            DatastoreOptions.getDefaultInstance().getService()
-                    ));
+                }
             } catch (Exception ex) {
-                log.info(ErrorsGetter.printException(ex));
+                log.log(Level.SEVERE, ErrorsGetter.printException(ex));
             }
             log.info("ObjectifyService.init - 2");
             ObjectifyService.register(Article.class);

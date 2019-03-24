@@ -11,6 +11,10 @@ import static com.googlecode.objectify.ObjectifyService.ofy;
 import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.tyaa.java.portal.springboot.gae.utils.CopyHelper;
+import org.tyaa.java.portal.springboot.gae.utils.ErrorsGetter;
 
 /**
  *
@@ -18,12 +22,15 @@ import java.util.List;
  */
 public abstract class AbstractDAO<T> {
     
-    public void create(T entity) {
+    private static final Logger log =
+            Logger.getLogger(CopyHelper.class.getName());
+    
+    public void create(T _entity) {
 	
         ObjectifyService.run(new VoidWork() {
             @Override
             public void vrun() {
-                ofy().save().entity(entity).now();
+                ofy().save().entity(_entity).now();
             }
         });
     }
@@ -46,5 +53,31 @@ public abstract class AbstractDAO<T> {
             }
         });
         return entities;
+    }
+    
+    public T read(Long _id) {
+            
+        T entity = null;
+        @SuppressWarnings("unchecked")
+        Class<T> entityType =
+            ((Class<T>) ((ParameterizedType) getClass()
+            .getGenericSuperclass()).getActualTypeArguments()[0]);
+        try {
+            T finalEntity = entityType.newInstance();
+            ObjectifyService.run(new VoidWork() {
+                @Override
+                public void vrun() {
+                    T entityResult =
+                        ofy().load().type(entityType).id(_id).now();
+                    if (entityResult != null) {
+                        CopyHelper.copy(entityResult, finalEntity);
+                    }
+                }
+            });
+            entity = finalEntity;
+        } catch (Exception ex) {
+            log.log(Level.SEVERE, ErrorsGetter.printException(ex));
+        }
+        return entity;
     }
 }

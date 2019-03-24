@@ -5,10 +5,12 @@ import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.tyaa.java.portal.datastore.model.Author;
 import org.tyaa.java.portal.datastore.model.JsonHttpResponse;
@@ -67,11 +69,15 @@ public class AuthorController {
         return authorService.read();
     }
 
-    /*@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public Author getAuthor(@PathVariable("id") int id) {
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    //public Author getAuthor(@PathVariable("id") Long _id) {
+    public JsonHttpResponse getAuthor(@PathVariable("id") Long _id) {
         //1
-        return authors.get(id);
-    }*/
+        //return authors.get(id);
+        
+        //3
+        return authorService.read(_id);
+    }
     
     @PostMapping("/create")
     public JsonHttpResponse create(@RequestBody Author _author) {

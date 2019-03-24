@@ -55,8 +55,18 @@ public class AuthorService implements IAuthorService {
     }
 
     @Override
-    public JsonHttpResponse read(Long id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public JsonHttpResponse read(Long _id) {
+        try {
+            return new JsonHttpResponse(
+                    JsonHttpResponse.fetchedStatus
+                    , "The author was fetched successfully"
+                    , authorDAO.read(_id)
+            );
+        } catch (Exception ex) {
+            return new JsonHttpResponse(
+                    JsonHttpResponse.errorStatus
+                    , ErrorsGetter.printException(ex));
+        }
     }
 
     @Override
