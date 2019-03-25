@@ -33,7 +33,6 @@ public class ObjectifyListener implements ServletContextListener{
             try {
                 if (System.getenv("SPRING_PROFILES_ACTIVE") == null) {
                     // local without memcache (gradle bootRun)
-                    //System.out.println("ObjectifyService.init - 1");
                     log.info("ObjectifyService.init - 1");
                     ObjectifyService.init(new ObjectifyFactory(
                             DatastoreOptions.newBuilder()

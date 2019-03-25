@@ -17,8 +17,11 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 public class JsonHttpResponse {
     
     public static String errorStatus = "error";
+    public static String warningStatus = "warning";
     public static String createdStatus = "created";
     public static String fetchedStatus = "fetched";
+    public static String updatedStatus = "updated";
+    public static String deletedStatus = "deleted";
     
     public String status;
     public String message;

@@ -19,68 +19,41 @@ import org.tyaa.java.portal.springboot.gae.service.AuthorService;
 @RestController
 @RequestMapping("/api/author")
 public class AuthorController {
-
-    //1
-    /*List<Author> authors;
-
-    public AuthorController() {
-
-        authors = new ArrayList<>();
-
-        Author author = new Author();
-        author.setName("A1");
-        author.setAbout("A1 - About");
-        author.setStartedAt(new Date());
-
-        Author author2 = new Author();
-        author2.setName("A2");
-        author2.setAbout("A2 - About");
-        author2.setStartedAt(new Date());
-
-        authors.add(author);
-        authors.add(author2);
-    }*/
     
     @Autowired
     private AuthorService authorService;
 
     @GetMapping("")
-    public JsonHttpResponse getAllAuthors() {
-    //public List<Author> getAllAuthors() {
-
-        //1
-        //return authors;
-        
-        //2
-        /*List<Author> authors = new ArrayList<>();
-        ObjectifyService.run(new VoidWork() {
-            @Override
-            public void vrun() {
-                List<Author> authorsResult =
-                    ofy().load().type(Author.class).list();
-                if (authorsResult != null) {
-                    authors.addAll(authorsResult);
-                }
-            }
-        });
-        return authors;*/
-        
-        //3
+    public JsonHttpResponse getAll() {
+    
         return authorService.read();
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    //public Author getAuthor(@PathVariable("id") Long _id) {
-    public JsonHttpResponse getAuthor(@PathVariable("id") Long _id) {
-        //1
-        //return authors.get(id);
+    @GetMapping(value = "/{id}")
+    public JsonHttpResponse get(@PathVariable("id") Long _id) {
         
-        //3
         return authorService.read(_id);
+    }
+    
+    @GetMapping(value = "/get-by-name/{name}")
+    public JsonHttpResponse getByName(@PathVariable("name") String _name) {
+        
+        return authorService.read(_name);
     }
     
     @PostMapping("/create")
     public JsonHttpResponse create(@RequestBody Author _author) {
         return authorService.create(_author);
+    }
+    
+    @PostMapping("/update")
+    public JsonHttpResponse update(@RequestBody Author _author) {
+        return authorService.update(_author);
+    }
+    
+    @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
+    public JsonHttpResponse delete(@PathVariable("id") Long _id) {
+        
+        return authorService.delete(_id);
     }
 }

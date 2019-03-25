@@ -22,8 +22,19 @@ import org.tyaa.java.portal.springboot.gae.utils.ErrorsGetter;
  */
 public abstract class AbstractDAO<T> {
     
-    private static final Logger log =
+    protected static Logger log;
+    private Class<T> entityType;
+
+    public AbstractDAO() {
+        
+        log =
             Logger.getLogger(CopyHelper.class.getName());
+        
+        entityType =
+            ((Class<T>) ((ParameterizedType) getClass()
+            .getGenericSuperclass()).getActualTypeArguments()[0]);
+    }
+    
     
     public void create(T _entity) {
 	
@@ -35,13 +46,15 @@ public abstract class AbstractDAO<T> {
         });
     }
     
+    public void update(T _entity) {
+	
+        create(_entity);
+    }
+    
     public List<T> read() {
 	
         List<T> entities = new ArrayList<>();
-        @SuppressWarnings("unchecked")
-        Class<T> entityType =
-            ((Class<T>) ((ParameterizedType) getClass()
-            .getGenericSuperclass()).getActualTypeArguments()[0]);
+        
         ObjectifyService.run(new VoidWork() {
             @Override
             public void vrun() {
@@ -58,10 +71,7 @@ public abstract class AbstractDAO<T> {
     public T read(Long _id) {
             
         T entity = null;
-        @SuppressWarnings("unchecked")
-        Class<T> entityType =
-            ((Class<T>) ((ParameterizedType) getClass()
-            .getGenericSuperclass()).getActualTypeArguments()[0]);
+        
         try {
             T finalEntity = entityType.newInstance();
             ObjectifyService.run(new VoidWork() {
@@ -79,5 +89,15 @@ public abstract class AbstractDAO<T> {
             log.log(Level.SEVERE, ErrorsGetter.printException(ex));
         }
         return entity;
+    }
+    
+    public void delete(Long _id) {
+		
+        ObjectifyService.run(new VoidWork() {
+            @Override
+            public void vrun() {
+                ofy().delete().type(entityType).id(_id).now();
+            }
+        });
     }
 }

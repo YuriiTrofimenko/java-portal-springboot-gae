@@ -29,7 +29,7 @@ public class AuthorService implements IAuthorService {
             authorDAO.create(author);
             return new JsonHttpResponse(
                     JsonHttpResponse.createdStatus
-                    , "The author was added successfully"
+                    , "The author created successfully"
             );
         } catch (Exception ex) {
             return new JsonHttpResponse(
@@ -44,7 +44,7 @@ public class AuthorService implements IAuthorService {
         try {
             return new JsonHttpResponse(
                     JsonHttpResponse.fetchedStatus
-                    , "The authors list was fetched successfully"
+                    , "The authors list fetched successfully"
                     , authorDAO.read()
             );
         } catch (Exception ex) {
@@ -57,10 +57,20 @@ public class AuthorService implements IAuthorService {
     @Override
     public JsonHttpResponse read(Long _id) {
         try {
+            Author author =
+                    authorDAO.read(_id);
+            String status =
+                    (author != null && author.getId() != null)
+                    ? JsonHttpResponse.fetchedStatus
+                    : JsonHttpResponse.warningStatus;
+            String message =
+                    (author != null && author.getId() != null)
+                    ? "The author fetched successfully"
+                    : "Not found";
             return new JsonHttpResponse(
-                    JsonHttpResponse.fetchedStatus
-                    , "The author was fetched successfully"
-                    , authorDAO.read(_id)
+                    status
+                    , message
+                    , author
             );
         } catch (Exception ex) {
             return new JsonHttpResponse(
@@ -70,18 +80,58 @@ public class AuthorService implements IAuthorService {
     }
 
     @Override
-    public JsonHttpResponse read(String name) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public JsonHttpResponse read(String _name) {
+        try {
+            Author author =
+                    authorDAO.read(_name);
+            String status =
+                    (author != null && author.getId() != null)
+                    ? JsonHttpResponse.fetchedStatus
+                    : JsonHttpResponse.warningStatus;
+            String message =
+                    (author != null && author.getId() != null)
+                    ? "The author fetched successfully"
+                    : "Not found";
+            return new JsonHttpResponse(
+                    status
+                    , message
+                    , author
+            );
+        } catch (Exception ex) {
+            return new JsonHttpResponse(
+                    JsonHttpResponse.errorStatus
+                    , ErrorsGetter.printException(ex));
+        }
     }
 
     @Override
     public JsonHttpResponse update(Author author) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try {
+            authorDAO.update(author);
+            return new JsonHttpResponse(
+                    JsonHttpResponse.updatedStatus
+                    , "The author updated successfully"
+            );
+        } catch (Exception ex) {
+            return new JsonHttpResponse(
+                    JsonHttpResponse.errorStatus
+                    , ErrorsGetter.printException(ex));
+        }
     }
 
     @Override
-    public JsonHttpResponse delete(Long id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public JsonHttpResponse delete(Long _id) {
+        try {
+            authorDAO.delete(_id);
+            return new JsonHttpResponse(
+                    JsonHttpResponse.deletedStatus
+                    , "The author deleted successfully"
+            );
+        } catch (Exception ex) {
+            return new JsonHttpResponse(
+                    JsonHttpResponse.errorStatus
+                    , ErrorsGetter.printException(ex));
+        }
     }
     
 }
