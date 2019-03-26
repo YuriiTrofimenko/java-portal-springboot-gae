@@ -15,8 +15,8 @@ import org.tyaa.java.portal.datastore.model.JsonHttpResponse;
 public interface IAuthorService {
     JsonHttpResponse create(Author author);
     JsonHttpResponse read();
-    JsonHttpResponse read(Long id);
-    JsonHttpResponse read(String name);
+    JsonHttpResponse read(Long id) throws Exception;
+    JsonHttpResponse read(String name) throws Exception;
     JsonHttpResponse update(Author author);
     JsonHttpResponse delete(Long id);
 }

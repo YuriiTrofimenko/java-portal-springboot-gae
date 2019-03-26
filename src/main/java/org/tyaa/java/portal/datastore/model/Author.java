@@ -11,8 +11,11 @@ import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
 import java.io.Serializable;
-import java.util.Collection;
+//import java.util.Collection;
 import java.util.Date;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  *
@@ -21,6 +24,7 @@ import java.util.Date;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Entity
+@Getter @Setter @NoArgsConstructor
 public class Author implements Serializable{
     @Id
     private Long id;
@@ -30,56 +34,10 @@ public class Author implements Serializable{
     private Date startedAt;
     //
     //private Collection<Article> articlesCollection;
-
-    public Author() {
-    }
-
-    public Author(Long id) {
-        this.id = id;
-    }
     
     public Author(String name, String about, Date startedAt) {
         this.name = name;
         this.about = about;
-        this.startedAt = startedAt;
-    }
-
-    public Author(Long id, String name, String about, Date startedAt) {
-        this.id = id;
-        this.name = name;
-        this.about = about;
-        this.startedAt = startedAt;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getAbout() {
-        return about;
-    }
-
-    public void setAbout(String about) {
-        this.about = about;
-    }
-
-    public Date getStartedAt() {
-        return startedAt;
-    }
-
-    public void setStartedAt(Date startedAt) {
         this.startedAt = startedAt;
     }
 }

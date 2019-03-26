@@ -11,10 +11,7 @@ import static com.googlecode.objectify.ObjectifyService.ofy;
 import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.tyaa.java.portal.springboot.gae.utils.CopyHelper;
-import org.tyaa.java.portal.springboot.gae.utils.ErrorsGetter;
 
 /**
  *
@@ -22,19 +19,14 @@ import org.tyaa.java.portal.springboot.gae.utils.ErrorsGetter;
  */
 public abstract class AbstractDAO<T> {
     
-    protected static Logger log;
     private Class<T> entityType;
 
     public AbstractDAO() {
-        
-        log =
-            Logger.getLogger(CopyHelper.class.getName());
         
         entityType =
             ((Class<T>) ((ParameterizedType) getClass()
             .getGenericSuperclass()).getActualTypeArguments()[0]);
     }
-    
     
     public void create(T _entity) {
 	
@@ -68,11 +60,11 @@ public abstract class AbstractDAO<T> {
         return entities;
     }
     
-    public T read(Long _id) {
+    public T read(Long _id)
+            throws InstantiationException, IllegalAccessException {
             
         T entity = null;
         
-        try {
             T finalEntity = entityType.newInstance();
             ObjectifyService.run(new VoidWork() {
                 @Override
@@ -85,9 +77,6 @@ public abstract class AbstractDAO<T> {
                 }
             });
             entity = finalEntity;
-        } catch (Exception ex) {
-            log.log(Level.SEVERE, ErrorsGetter.printException(ex));
-        }
         return entity;
     }
     

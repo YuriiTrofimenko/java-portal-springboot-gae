@@ -30,13 +30,13 @@ public class AuthorController {
     }
 
     @GetMapping(value = "/{id}")
-    public JsonHttpResponse get(@PathVariable("id") Long _id) {
+    public JsonHttpResponse get(@PathVariable("id") Long _id) throws Exception {
         
         return authorService.read(_id);
     }
     
     @GetMapping(value = "/get-by-name/{name}")
-    public JsonHttpResponse getByName(@PathVariable("name") String _name) {
+    public JsonHttpResponse getByName(@PathVariable("name") String _name) throws Exception {
         
         return authorService.read(_name);
     }

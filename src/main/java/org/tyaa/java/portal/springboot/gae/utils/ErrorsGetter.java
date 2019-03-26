@@ -21,15 +21,12 @@ public class ErrorsGetter {
                 errorTrace += el.toString();
             }
             if (errorTrace.equals("")) {
-                //printException(_ex, _out, _gson);
-
             } else {
                 errorString = errorTrace;
             }
         } else {
 
             errorString = _ex.getMessage();
-            //rd = new RespData("unknown_exception");
         }
         return errorString;
     }

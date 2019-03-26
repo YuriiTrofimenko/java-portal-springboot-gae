@@ -12,6 +12,9 @@ import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
 import java.util.Date;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  *
@@ -20,6 +23,7 @@ import java.util.Date;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(Include.NON_NULL)
 @Entity
+@Getter @Setter @NoArgsConstructor
 public class Article {
     @Id
     private Long id;
@@ -31,66 +35,10 @@ public class Article {
     @Index
     private Author authorId;
 
-    public Article() {
-    }
-
-    public Article(Long id) {
-        this.id = id;
-    }
-
-    public Article(Long id, String title, String content, String image, Date publishedAt) {
-        this.id = id;
+    public Article(String title, String content, String image, Date publishedAt) {
         this.title = title;
         this.content = content;
         this.image = image;
         this.publishedAt = publishedAt;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
-    }
-
-    public Date getPublishedAt() {
-        return publishedAt;
-    }
-
-    public void setPublishedAt(Date publishedAt) {
-        this.publishedAt = publishedAt;
-    }
-
-    public Author getAuthorId() {
-        return authorId;
-    }
-
-    public void setAuthorId(Author authorId) {
-        this.authorId = authorId;
     }
 }
